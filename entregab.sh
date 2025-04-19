@@ -2,9 +2,9 @@
 RUTA_REPORTE=""
 
 function bienvenida() {
-  echo "=============================================="
-  echo "        BIENVENIDO ESTIMADO USUARIO           "
-  echo "=============================================="
+  echo "====================================================="
+  echo "            BIENVENIDO ESTIMADO USUARIO              "
+  echo "====================================================="
   echo ""
 }
 
@@ -151,7 +151,7 @@ function verificar_ip() {
 function mostrar_menu() {
   echo ""
   echo "====================================================="
-  echo "            El Menú Degustación de IPs               "
+  echo "            EL MENÙ DEGUSTACIÓN DE IPs               "
   echo "====================================================="
   echo "1. Escanear Puertos"
   echo "2. Escanear Equipos en Red"
