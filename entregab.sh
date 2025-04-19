@@ -54,9 +54,9 @@ function escanear_puertos() {
     echo "🛠️ Escaneando todos los puertos de $OBJETIVO..."
     if [ -n "$RUTA_REPORTE" ]; then
       archivo=$(definir_archivo "puertos")
-      nmap --stats-every 5s -p- "$OBJETIVO" | tee "$archivo"
+      nmap --stats-every 5s -p 1-1024 "$OBJETIVO" | tee "$archivo"
     else
-      nmap --stats-every 5s -p- "$OBJETIVO"
+      nmap --stats-every 5s -p 1-1024 "$OBJETIVO"
     fi
   fi
 }
