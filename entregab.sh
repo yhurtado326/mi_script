@@ -50,18 +50,14 @@ function definir_archivo() {
 # 1. ESCANEAR PUERTOS
 function escanear_puertos() {
   leer_objetivo
-  IP_PATTERN="^([0-9]{1,3}\.){3}[0-9]{1,3}$"
-
-  if [[ "$OBJETIVO" =~ $IP_PATTERN ]]; then
-    echo "🛠️ Escaneando todos los puertos de la IP: $OBJETIVO..."
+  if [[ -n "$OBJETIVO" ]; then
+    echo "🛠️ Escaneando todos los puertos de $OBJETIVO..."
     if [ -n "$RUTA_REPORTE" ]; then
       archivo=$(definir_archivo "puertos")
-      nmap --stats-cada 5 s -p- "$OBJETIVO" | tee "$archivo"
+      nmap --stats-every 5s -p- "$OBJETIVO" | tee "$archivo"
     else
-      nmap --stats-cada 5 s -p- "$OBJETIVO"
+      nmap --stats-every 5s -p- "$OBJETIVO"
     fi
-  else
-    echo "❌ El objetivo ingresado '$OBJETIVO' no parece ser una dirección IP válida. Por favor, ingrese una IP."
   fi
 }
 
