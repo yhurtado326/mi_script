@@ -1,10 +1,9 @@
 #!/bin/bash
-
 RUTA_REPORTE=""
 
 function bienvenida() {
   echo "=============================================="
-  echo "                 🚀 BIENVENIDO A NMAP PLUS 🚀                  "
+  echo "        BIENVENIDO ESTIMADO USUARIO           "
   echo "=============================================="
   echo ""
 }
@@ -48,10 +47,10 @@ function definir_archivo() {
   echo "$RUTA_REPORTE/${tipo}_${OBJETIVO}_$(date +%Y%m%d_%H%M%S).txt"
 }
 
-# 1. ESCANEAR PUERTOS (cuando se coloca la IP escanea los puertos)
+# 1. ESCANEAR PUERTOS
 function escanear_puertos() {
   leer_objetivo
-  if [[ -n "$OBJETIVO" ]]; then
+  if [[ -n "$OBJETIVO" ]; then
     echo "🛠️ Escaneando todos los puertos de $OBJETIVO..."
     if [ -n "$RUTA_REPORTE" ]; then
       archivo=$(definir_archivo "puertos")
@@ -62,9 +61,9 @@ function escanear_puertos() {
   fi
 }
 
-# 2. ESCANEAR EQUIPOS (colocar la dir de red como por ejemplo, 192.168.1.0/24 y escanee todas las 255)
+# 2. ESCANEAR EQUIPOS
 function escanear_equipos_red() {
-  read -p "🌐 Ingrese la dirección de red (ej: 192.168.1.0/24) para escanear equipos: " RED
+  read -p "🌐 Ingrese la dirección de red para escanear los equipos: " RED
   if [[ -n "$RED" ]]; then
     echo "📡 Escaneando equipos en la red $RED..."
     if [ -n "$RUTA_REPORTE" ]; then
@@ -76,11 +75,11 @@ function escanear_equipos_red() {
   fi
 }
 
-# 3. ESCANEAR S.O (por ip, icmp si es mayor a 100 windows y si es menor de 65 linux)
+# 3. ESCANEAR S.O
 function escanear_so_icmp() {
   leer_objetivo
   if [[ -n "$OBJETIVO" ]]; then
-    echo "🔍 Intentando detectar el sistema operativo de $OBJETIVO por ICMP..."
+    echo "🔍 Intentando detectar el sistema operativo de $OBJETIVO ..."
     local tiempo_promedio=$(ping -c 3 "$OBJETIVO" | awk '/rtt min\/avg\/max\/mdev/ {print $4}' | cut -d '/' -f 2)
 
     if [[ -n "$tiempo_promedio" ]]; then
@@ -97,9 +96,9 @@ function escanear_so_icmp() {
           echo "Posiblemente Linux (latencia ICMP < 65ms)." >> "$(definir_archivo "so_icmp")"
         fi
       else
-        echo "❓ No se pudo determinar el sistema operativo con certeza basado en la latencia ICMP."
+        echo "❓ No se pudo determinar el sistema operativo con certeza"
         if [ -n "$RUTA_REPORTE" ]; then
-          echo "No se pudo determinar el sistema operativo con certeza basado en la latencia ICMP." >> "$(definir_archivo "so_icmp")"
+          echo "No se pudo determinar el sistema operativo con certeza" >> "$(definir_archivo "so_icmp")"
         fi
       fi
     else
@@ -108,7 +107,7 @@ function escanear_so_icmp() {
   fi
 }
 
-# 4. REALIZAR DOS (por ip, peticiones icmp de 10 en 10, buscar que parametro de ping lo haga)
+# 4. REALIZAR DOS
 function realizar_dos() {
   leer_objetivo
   if [[ -n "$OBJETIVO" ]]; then
@@ -117,7 +116,7 @@ function realizar_dos() {
       echo "💥 Realizando un ataque DoS simulado con $NUM_PETICIONES peticiones ICMP de 10 en 10 a $OBJETIVO (¡CUIDADO! Use con responsabilidad)."
       for ((i=1; i<=$NUM_PETICIONES; i+=10)); do
         ping -c 10 "$OBJETIVO" &
-        sleep 0.1 # Esperar un poco entre lotes para no saturar demasiado
+        sleep 0.1 #Esperar un poco para no saturar demasiado
       done
       wait # Esperar a que terminen todos los procesos de ping en segundo plano
       echo "✅ Envío de $NUM_PETICIONES peticiones ICMP completado."
@@ -130,7 +129,7 @@ function realizar_dos() {
   fi
 }
 
-# 5. VERIFICAR IP (al momento de colocar un dominio me de la ip)
+# 5. VERIFICAR IP
 function verificar_ip() {
   read -p "🌐 Ingrese el dominio para verificar su IP: " DOMINIO
   if [[ -n "$DOMINIO" ]]; then
@@ -147,7 +146,7 @@ function verificar_ip() {
   fi
 }
 
-# 6. SALIR (implementado en el menú)
+# 6. SALIR
 
 function mostrar_menu() {
   echo ""
