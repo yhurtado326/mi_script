@@ -50,13 +50,13 @@ function definir_archivo() {
 # 1. ESCANEAR PUERTOS
 function escanear_puertos() {
   leer_objetivo
-  if [[ -n "$OBJETIVO" ]]; then
-    echo "🛠️ Escaneando todos los puertos de $OBJETIVO..."
+    if [[ -n "$OBJETIVO" ]]; then
+    echo "🛠️ Escaneando todos los puertos del 1 al 1024 en $OBJETIVO..."
     if [ -n "$RUTA_REPORTE" ]; then
       archivo=$(definir_archivo "puertos")
-      nmap --stats-every 5s -p 1-1024 "$OBJETIVO" | tee "$archivo"
+      nmap --stats-every 5s -p1-1024 "$OBJETIVO" | tee "$archivo"
     else
-      nmap --stats-every 5s -p 1-1024 "$OBJETIVO"
+      nmap --stats-every 5s -p1-1024 "$OBJETIVO"
     fi
   fi
 }
