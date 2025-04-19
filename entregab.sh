@@ -50,7 +50,7 @@ function definir_archivo() {
 # 1. ESCANEAR PUERTOS
 function escanear_puertos() {
   leer_objetivo
-  if [[ -n "$OBJETIVO" ]; then
+  if [[ -n "$OBJETIVO" ]]; then
     echo "🛠️ Escaneando todos los puertos de $OBJETIVO..."
     if [ -n "$RUTA_REPORTE" ]; then
       archivo=$(definir_archivo "puertos")
