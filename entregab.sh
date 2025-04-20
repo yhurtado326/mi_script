@@ -90,10 +90,10 @@ function escanear_so_icmp() {
         if [ -n "$RUTA_REPORTE" ]; then
           echo "Posiblemente Windows (latencia ICMP > 100ms)." >> "$(definir_archivo "so_icmp")"
         fi
-      elif [[ "$tiempo" -lt 65 ]]; then
-        echo "🐧 Posiblemente Linux (latencia ICMP < 65ms)."
+      elif [[ "$tiempo" -lt 70 ]]; then
+        echo "🐧 Posiblemente Linux."
         if [ -n "$RUTA_REPORTE" ]; then
-          echo "Posiblemente Linux (latencia ICMP < 65ms)." >> "$(definir_archivo "so_icmp")"
+          echo "Posiblemente Linux." >> "$(definir_archivo "so_icmp")"
         fi
       else
         echo "❓ No se pudo determinar el sistema operativo con certeza"
