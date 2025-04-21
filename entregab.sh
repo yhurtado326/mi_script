@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 RUTA_REPORTE=""
 
 function bienvenida() {
