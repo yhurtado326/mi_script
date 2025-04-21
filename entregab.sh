@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# Autolimpieza
+if file "$0" | grep -q CRLF; then
+  echo "🔧 Corrigiendo formato CRLF a LF automáticamente..."
+  sed -i 's/\r$//' "$0"
+  exec "$0" "$@"  # Reinicia el script ya limpio
+fi
+
 RUTA_REPORTE=""
 
 function bienvenida() {
