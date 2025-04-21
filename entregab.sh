@@ -79,32 +79,26 @@ function escanear_equipos_red() {
 function escanear_so_icmp() {
   leer_objetivo
   if [[ -n "$OBJETIVO" ]]; then
-    echo "🔍 Intentando detectar el sistema operativo de $OBJETIVO ..."
-    local tiempo_promedio=$(ping -c 3 "$OBJETIVO" | awk '/rtt min\/avg\/max\/mdev/ {print $4}' | cut -d '/' -f 2)
+    echo "🔍 Detectando sistema operativo de $OBJETIVO basado en TTL ..."
 
-    if [[ -n "$tiempo_promedio" ]]; then
-      local tiempo=$(echo "$tiempo_promedio" | cut -d '.' -f 1) # Obtener solo la parte entera
-
-      if [[ "$tiempo" -gt 100 ]]; then
-        echo "💡 Posiblemente Windows (latencia ICMP > 100ms)."
-        if [ -n "$RUTA_REPORTE" ]; then
-          echo "Posiblemente Windows (latencia ICMP > 100ms)." >> "$(definir_archivo "so_icmp")"
-        fi
-      elif [[ "$tiempo" -lt 70 ]]; then
+    local ttl_valor
+    ttl_valor=$(ping -c 3 "$OBJETIVO" \
+      | grep -oE 'ttl=[0-9]+' \
+      | head -n1 \
+      | cut -d'=' -f2)
+      
+    if [[ -n "$ttl_valor" ]]; then
+      if (( ttl_valor > 100 )); then
+        echo "💡 Posiblemente Windows."
+        [[ -n "$RUTA_REPORTE" ]] && echo "Posiblemente Windows." >> "$(definir_archivo "so_icmp")"
+      elif (( ttl_valor < 70 )); then
         echo "🐧 Posiblemente Linux."
-        if [ -n "$RUTA_REPORTE" ]; then
-          echo "Posiblemente Linux." >> "$(definir_archivo "so_icmp")"
-        fi
-      else
-        echo "❓ No se pudo determinar el sistema operativo con certeza"
-        if [ -n "$RUTA_REPORTE" ]; then
-          echo "No se pudo determinar el sistema operativo con certeza" >> "$(definir_archivo "so_icmp")"
-        fi
+        [[ -n "$RUTA_REPORTE" ]] && echo "Posiblemente Linux." >> "$(definir_archivo "so_icmp")"
       fi
     else
-      echo "❌ No se pudo obtener la latencia ICMP para $OBJETIVO."
+      echo "❌ No se pudo obtener el TTL para $OBJETIVO."
     fi
-  fi
+  fi   
 }
 
 # 4. REALIZAR DOS
